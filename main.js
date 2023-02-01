@@ -1,0 +1,1 @@
+const ships ['cruiser',2];
