@@ -3,3 +3,84 @@
     margin: 0;
     padding: 0;
 }
+
+.container {
+    display:flex;
+    justify-content: space-evenly;
+}
+
+h1 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+h2 {
+    grid-column: 1/12;
+}
+
+
+
+.computer {
+    display: grid;
+    grid-template-rows: repeat(11, 40px);
+    grid-template-columns: repeat(11,40px);
+    margin: 0 auto;
+    height: 480px;
+}
+
+.player {
+    display: grid;
+    grid-template-rows: repeat(11, 40px);
+    grid-template-columns: repeat(11,40px);
+    margin: 0 auto;
+    height: 480px;
+}
+
+.player > div, .computer > div {
+    background-color: lightgrey;
+    border: 1px solid black;
+    text-align: center;
+    padding-top: 10px;
+    color: white;
+}
+
+.gridTitle {
+    background-color: darkgray !important;
+}
+
+.info {
+    width: 20vw;
+    text-align: center;
+}
+
+button {
+    background-color: rgb(255, 77, 0);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color:white;
+    font-size: 26px;
+    margin: 0 auto;
+    display: block;
+    border: 1px solid blue;
+}
+
+#playerships, #forceGuess {
+    display:none;
+}
+
+ul {
+    list-style: none;
+    font-size: 2em;
+}
+
+li {
+    border: 1px solid white;
+    background-color: black;
+    color: white;
+    margin: 5px 0;
+}
+
+#begin {
+    display: none;
+}
