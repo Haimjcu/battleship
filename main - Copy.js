@@ -169,18 +169,16 @@ for (computerGrid of computerGrids) {
        if(!event.target.classList.contains("gridTitle")) {
         event.target.setAttribute('data-guessed','1');
         playerMsg.innerHTML=(`Guess: ${translateGuess(event.target.id)}`);
-        
-            if(event.target.getAttribute("data-ship")!="") {
-                event.target.style.backgroundColor="red";
-                event.target.style.color="red";
-                computerStatus[event.target.getAttribute("data-ship")]=computerStatus[event.target.getAttribute("data-ship")]-1;
-                if(computerStatus[event.target.getAttribute("data-ship")]==0) {
-                    computerStatus["total"]=computerStatus["total"]-1;
-                    computerMsg.innerHTML=(`You sunk my: ${shipXlate[event.target.getAttribute("data-ship")]}`);
-                }
+            if(event.target.innerHTML=="") {
+                event.target.style.backgroundColor="white";  
             }
             else {
-                event.target.style.backgroundColor="white";  
+                event.target.style.backgroundColor="red";
+                event.target.style.color="red";
+                computerStatus[event.target.innerHTML]=computerStatus[event.target.innerHTML]-1;
+                if(computerStatus[event.target.innerHTML]==0) {
+                    computerStatus["total"]=computerStatus["total"]-1;
+                }
             }
         }
         if(computerStatus["total"]==0) {alert('Game Over. You Won!!!!')}
@@ -258,10 +256,9 @@ forceGuessBtn.addEventListener("click", (event) => {
        /* if(gridLoc.innerHTML=="") { */
         if(gridLoc.getAttribute("data-ship")!="") {
             gridLoc.style.backgroundColor="red";
-            playerStatus[gridLoc.getAttribute("data-ship")]=playerStatus[gridLoc.getAttribute("data-ship")]-1;
-            if(playerStatus[gridLoc.getAttribute("data-ship")]==0) {
+            playerStatus[gridLoc.innerHTML]=playerStatus[gridLoc.innerHTML]-1;
+            if(playerStatus[gridLoc.innerHTML]==0) {
                 playerStatus["total"]=playerStatus["total"]-1;
-                playerMsg.innerHTML=(`You sunk my: ${shipXlate[gridLoc.getAttribute("data-ship")]}`);
             }
         }
         else {
