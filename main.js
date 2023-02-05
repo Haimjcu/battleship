@@ -1,4 +1,4 @@
-const playerStatus = {
+let playerStatus = {
     'DE':2,
     'CR':3,
     'SU':3,
@@ -7,7 +7,16 @@ const playerStatus = {
     'total':5
 }
 
-const computerStatus = {
+let computerStatus = {
+    'DE':2,
+    'CR':3,
+    'SU':3,
+    'BA':4,
+    'CA':5,
+    'total':5
+}
+
+const resetStatus = {
     'DE':2,
     'CR':3,
     'SU':3,
@@ -33,7 +42,7 @@ const shipXlate = {
 }
 
 const startGameBtn=document.getElementById("startgamebtn");
-const forceGuessBtn=document.getElementById("forceGuess");
+const playAgainBtn=document.getElementById("playagainbtn");
 const playerShips=document.getElementById("playerships");
 const destroyer=document.getElementById("destroyer");
 const submarine=document.getElementById("submarine");
@@ -42,9 +51,10 @@ const battleship=document.getElementById("battleship");
 const carrier=document.getElementById("carrier");
 const playerGrids=document.querySelectorAll(".player > div");
 const computerGrids=document.querySelectorAll(".computer > div");
-const begin=document.getElementById("begin");
+const begins=document.querySelectorAll(".begin");
 const computerMsg=document.getElementById("computerMsg");
 const playerMsg=document.getElementById("playerMsg");
+const gameOver=document.getElementById("gameover");
 
 let boxId="";
 let shipSize=0;
@@ -59,12 +69,75 @@ let coldirection=0;
 let gridLocText="";
 let gridLoc="";
 let guessLoop=false;
+let statusBoxPp="";
+let statusBoxP="";
+let statusBoxCc="";
+let statusBoxC="";
+let whoseTurn="computer";
 
 
 
 startGameBtn.addEventListener("click", (event) => {
     startGameBtn.style.display="none";
     playerShips.style.display="block";
+})
+
+playAgainBtn.addEventListener("click", (event) => {
+    playAgainBtn.style.display="none";
+    destroyer.style.color="white";
+    destroyer.style.backgroundColor="black";
+    destroyer.style.borderColor="white";
+    destroyer.style.display="block";
+    submarine.style.color="white";
+    submarine.style.backgroundColor="black";
+    submarine.style.borderColor="white";
+    submarine.style.display="block";
+    cruiser.style.color="white";
+    cruiser.style.backgroundColor="black";
+    cruiser.style.borderColor="white";
+    cruiser.style.display="block";
+    battleship.style.color="white";
+    battleship.style.backgroundColor="black";
+    battleship.style.borderColor="white";
+    battleship.style.display="block";
+    carrier.style.color="white";
+    carrier.style.backgroundColor="black";
+    carrier.style.borderColor="white";
+    carrier.style.display="block";
+    playerShips.style.display="block";
+    playerStatus=resetStatus;
+    computerStatus=resetStatus;
+    for(r=1; r<6; r++) {
+        statusBoxPp="statusBoxP"+r;
+        statusBoxP=document.getElementById(statusBoxPp);
+        statusBoxP.style.backgroundColor="white";
+        statusBoxCc="statusBoxC"+r;
+        statusBoxC=document.getElementById(statusBoxCc);
+        statusBoxC.style.backgroundColor="blue";
+    }
+    for (playerGrid of playerGrids) {
+        if(!playerGrid.classList.contains("gridTitle") && !playerGrid.classList.contains("header")) {
+            playerGrid.style.backgroundColor="lightgrey";
+            playerGrid.innerHTML="";
+            playerGrid.style.color="lightgrey";
+            playerGrid.setAttribute('data-guessed','0');
+            playerGrid.setAttribute('data-ship','');
+        }
+    }
+    for (computerGrid of computerGrids) {
+        if(!computerGrid.classList.contains("gridTitle") && !computerGrid.classList.contains("header")) {
+            computerGrid.style.backgroundColor="lightgrey";
+            computerGrid.innerHTML="";
+            computerGrid.style.color="lightgrey";
+            computerGrid.setAttribute('data-guessed','0');
+            computerGrid.setAttribute('data-ship','');
+        }
+    }
+    shipsPlaced=0;
+    for (const shipCode in shipCodes) {
+        computerPlaceShips(shipCode);    
+    }
+    gameOver.style.display="none";
 })
 
 destroyer.addEventListener("click", (event) => {
@@ -114,14 +187,14 @@ carrier.addEventListener("click", (event) => {
 
 // player place ships on board
 for (playerGrid of playerGrids) {
-    if(!playerGrid.classList.contains("gridTitle")) {
+    if(!playerGrid.classList.contains("gridTitle") && !playerGrid.classList.contains("header")) {
         i++;
         playerGrid.setAttribute("id","player"+i);
         playerGrid.setAttribute('data-guessed','0');
         playerGrid.setAttribute('data-ship','');
     }
     playerGrid.addEventListener("click", (event) => {
-       if(!event.target.classList.contains("gridTitle")) {
+       if(!event.target.classList.contains("gridTitle") && !event.target.classList.contains("header") && boxId!="") {
         event.target.style.backgroundColor="blue";
         event.target.innerHTML=boxId;
         event.target.setAttribute('data-ship',boxId); 
@@ -150,45 +223,75 @@ function shipPlaced() {
             break;
     }
     shipsPlaced++;
-    alert("Ship Placed");
+    /* alert("Ship Placed"); */
+    statusBoxPp="statusBoxP"+shipsPlaced;
+    statusBoxP=document.getElementById(statusBoxPp);
+    statusBoxP.style.backgroundColor="blue";
+    boxId="";
     if(shipsPlaced==5) {
-        begin.style.display="block";
-        forceGuessBtn.style.display="block";
+        whoseTurn="player";
+        playerShips.style.display="none";
+        for (begin of begins) {
+            begin.style.display="block";
+        }
     }
 }
 
 // player guess
 for (computerGrid of computerGrids) {
-    if(!computerGrid.classList.contains("gridTitle")) {
+    if(!computerGrid.classList.contains("gridTitle") && !computerGrid.classList.contains("header")) {
         ii++;
         computerGrid.setAttribute("id","computer"+ii);
         computerGrid.setAttribute('data-ship','');
         computerGrid.setAttribute('data-guessed','1');
     }
     computerGrid.addEventListener("click", (event) => {
-       if(!event.target.classList.contains("gridTitle")) {
+       if(!event.target.classList.contains("gridTitle") && whoseTurn=="player") {
         event.target.setAttribute('data-guessed','1');
         playerMsg.innerHTML=(`Guess: ${translateGuess(event.target.id)}`);
         
             if(event.target.getAttribute("data-ship")!="") {
                 event.target.style.backgroundColor="red";
                 event.target.style.color="red";
+                computerMsg.innerHTML=('HIT');
                 computerStatus[event.target.getAttribute("data-ship")]=computerStatus[event.target.getAttribute("data-ship")]-1;
                 if(computerStatus[event.target.getAttribute("data-ship")]==0) {
+                    statusBoxCc="statusBoxC"+computerStatus["total"];
+                    statusBoxC=document.getElementById(statusBoxCc);
+                    statusBoxC.style.backgroundColor="red";
                     computerStatus["total"]=computerStatus["total"]-1;
                     computerMsg.innerHTML=(`You sunk my: ${shipXlate[event.target.getAttribute("data-ship")]}`);
                 }
             }
             else {
-                event.target.style.backgroundColor="white";  
+                event.target.style.backgroundColor="white";
+                computerMsg.innerHTML=('MISS');  
             }
+
+            if(computerStatus["total"]==0) {
+                for (begin of begins) {
+                    begin.style.display="none";
+                }
+                playAgainBtn.style.display="block";
+                gameOver.innerHTML="Game Over. You Won!!!!";
+                gameOver.style.color="blue";
+                gameOver.style.display="block";
+            }
+            else {
+                setTimeout(computerGuess,1000);
+            }
+            whoseTurn="computerr";
         }
-        if(computerStatus["total"]==0) {alert('Game Over. You Won!!!!')}
+
     });
 }
 
 // place the computers ships on the grid
 for (const shipCode in shipCodes) {
+    computerPlaceShips(shipCode);    
+}
+
+function computerPlaceShips(shipCode) {
     let shipLength=parseInt(shipCodes[shipCode]);
 
     switch (shipCode) {
@@ -239,11 +342,10 @@ for (const shipCode in shipCodes) {
             break;
         }
     }
-    
 }
 
 // Computer guess
-forceGuessBtn.addEventListener("click", (event) => {
+function computerGuess() {
     guessLoop=false;
     while(guessLoop===false) {
         rowStart=Math.floor(Math.random() * 10)+1;
@@ -258,23 +360,37 @@ forceGuessBtn.addEventListener("click", (event) => {
        /* if(gridLoc.innerHTML=="") { */
         if(gridLoc.getAttribute("data-ship")!="") {
             gridLoc.style.backgroundColor="red";
+            playerMsg.innerHTML=('HIT'); 
             playerStatus[gridLoc.getAttribute("data-ship")]=playerStatus[gridLoc.getAttribute("data-ship")]-1;
             if(playerStatus[gridLoc.getAttribute("data-ship")]==0) {
+                statusBoxPp="statusBoxP"+playerStatus["total"];
+                statusBoxP=document.getElementById(statusBoxPp);
+                statusBoxP.style.backgroundColor="red";
                 playerStatus["total"]=playerStatus["total"]-1;
                 playerMsg.innerHTML=(`You sunk my: ${shipXlate[gridLoc.getAttribute("data-ship")]}`);
             }
         }
         else {
             gridLoc.style.backgroundColor="white"; 
-            gridLoc.style.color="blue"; 
+            gridLoc.style.color="blue";
+            playerMsg.innerHTML=('MISS');  
         }
     
-        if(playerStatus["total"]==0) {alert('Game Over. You Lost (:')}
+        if(playerStatus["total"]==0) {
+            for (begin of begins) {
+                begin.style.display="none";
+            }
+            gameOver.innerHTML="Game Over. You Lost (:";
+            gameOver.style.color="red";
+            gameOver.style.display="block";
+            playAgainBtn.style.display="block";
+        }
         guessLoop=true;
         break;
    }
+   whoseTurn="player";
 
-})
+}
 
 function translateGuess(guess) {
     let guessColumn=guess.slice(-1);

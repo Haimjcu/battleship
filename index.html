@@ -12,6 +12,17 @@
     <div class="container">
         <div class="computer">
             <h2>Computer</h2>
+            <div class="header">
+                <h3 id="computerMsg">Guess:</h3>
+                <div class="statusBoxes">
+                    <div class="statusBox" id="statusBoxC1"></div>
+                    <div class="statusBox" id="statusBoxC2"></div>
+                    <div class="statusBox" id="statusBoxC3"></div>
+                    <div class="statusBox" id="statusBoxC4"></div>
+                    <div class="statusBox" id="statusBoxC5"></div>
+                </div>
+            </div>
+            
             <div class="gridTitle"></div>
             <div class="gridTitle">A</div>
             <div class="gridTitle">B</div>
@@ -133,10 +144,10 @@
             <div></div>
             <div></div>
             <div></div>
-            <h2 id="computerMsg">Guess:</h2>
         </div>
         <div class="info">
             <button id="startgamebtn">Start Game</button>
+            <button id="playagainbtn">Play Again</button>
             <div id="playerships">
                 <h2>Place Ships on Board</h2>
                 	<ul>
@@ -146,13 +157,25 @@
                         <li id="battleship">Battleship - 4</li>
                         <li id="carrier">Carrier - 5</li>
                     </ul>
+            <p>Select a ship above. Then place all the pieces on the board.</p>
             </div>
-            <h2 id="begin">Begin Game</h2>
-            <button id="forceGuess">Computer Guess</button>
+            <h2 id="begin" class="begin">Begin Game</h2>
+            <p class="begin">Select a box on the Computer's board.</p>
+            <h2 id="gameover">Game Over</h2>
 
         </div>
         <div class="player">
-            <h2>Player</h2>
+            <h2>Player</h2>            
+            <div class="header">
+                <h3 id="playerMsg">Guess:</h3>
+                <div class="statusBoxes">
+                    <div class="statusBox" id="statusBoxP1"></div>
+                    <div class="statusBox" id="statusBoxP2"></div>
+                    <div class="statusBox" id="statusBoxP3"></div>
+                    <div class="statusBox" id="statusBoxP4"></div>
+                    <div class="statusBox" id="statusBoxP5"></div>
+                </div>
+            </div>
             <div class="gridTitle"></div>
             <div class="gridTitle">A</div>
             <div class="gridTitle">B</div>
@@ -274,7 +297,6 @@
             <div></div>
             <div></div>
             <div></div>
-            <h2 id="playerMsg">Guess:</h2>
         </div>
     </div>
     <script src="main.js"></script>

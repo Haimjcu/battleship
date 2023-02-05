@@ -16,9 +16,25 @@ h1 {
 
 h2 {
     grid-column: 1/12;
+    text-align: center;
+}
+.header {
+    grid-column: 1/12;
+    display: flex;
+    justify-content: space-between;
 }
 
+.statusBoxes{
+    display: grid;
+    grid-template-rows: repeat(1, 25px);
+    grid-template-columns: repeat(5,25px);
+    grid-gap: 3px;
+}
 
+.statusBox {
+    background-color: white;
+    border: 3px solid black;
+}
 
 .computer {
     display: grid;
@@ -36,7 +52,7 @@ h2 {
     height: 520px;
 }
 
-.player > div, .computer > div {
+.player > div:not(.header), .computer > div:not(.header) {
     background-color: lightgrey;
     border: 1px solid black;
     text-align: center;
@@ -65,7 +81,7 @@ button {
     border: 1px solid blue;
 }
 
-#playerships, #forceGuess {
+#playerships, #playagainbtn, #gameover {
     display:none;
 }
 
@@ -81,6 +97,20 @@ li {
     margin: 5px 0;
 }
 
-#begin {
-    display: none;
+#begin, #gameover {
+    font-size: 36px;
+    color: blue;
+    margin-top:50px;    
+}
+
+.begin {
+    display:none;
+}
+
+#statusBoxC1, #statusBoxC2,#statusBoxC3,#statusBoxC4,#statusBoxC5 {
+    background-color: blue;
+}
+
+p {
+    font-size: 20px;
 }
