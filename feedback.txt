@@ -1,0 +1,13 @@
+Battleship Game.
+First of all I want to say I am impressed with the level of understanding of the studied material.
+Your javascript and styling shows that you know what you're doing!
+To make your code shorter I would try styling with classes and css , or maybe instead of:
+submarine.style.color="black"
+submarine.style.backgroundColor="white";
+submarine.style.borderColor="black";
+
+I would do submarine.style="color:black;backgroundColor:white;borderColor:black;"
+
+Also I might consider saving all the variables at the beggining of the code as an object and accessing the information through there.
+It will cut your code length by a lot and improve readability.
+Fantastic job Haim!
